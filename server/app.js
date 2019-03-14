@@ -22,14 +22,13 @@ app.post('/submit_userdata', (req, res) => {
     // try w/o underscores
 
     const accessKey = storeUserdataToFile(req.body);
-    // add som more status codes if something goes wrong
     res.status(202).send(accessKey);
 })
 
 function storeUserdataToFile(userdata) {
     const generateUuid = require('uuid/v1');
     const accessKey = generateUuid();
-    const time = getTimeHours();
+    const time = getTimeMinutes();
     const userInfo = {
         ...userdata,
         time_of_arrival: time,
@@ -43,10 +42,11 @@ function storeUserdataToFile(userdata) {
     return accessKey;
 }
 
-function getTimeHours() {
+function getTimeMinutes() {
     const millisec = Date.now();
-    const hour = millisec / 3.6e6;
-    return Math.floor(hour);
+    const minutes = millisec / 6e4;
+    console.log(minutes);
+    return Math.floor(minutes);
 }
 
 app.get('/get_userdata', async (req, res) => {
@@ -59,10 +59,11 @@ app.get('/get_userdata', async (req, res) => {
     if (fileName) {
         const readfileProm = promisify(fs.readFile);
         readfileProm(`./server/userdata/${fileName}.txt`, 'utf8')
+        .then(userObj => addLengthOfVisit(userObj))
         .then(data => res.status(202).send(data))
-        .catch(err => console.error(err))
+        .catch(err => res.status(500).send('Found file with access key but could not read it:'. err))
     } else {
-        res.send(401)
+        res.status(401).send('The access key did not match the server')
     }
 })
 
@@ -70,6 +71,13 @@ function getUserdataFiles() {
     const readdirProm = promisify(fs.readdir);
     return readdirProm('./server/userdata')
             .catch(err => console.error(err));
+}
+
+function addLengthOfVisit(userInfoJSON) {
+    const userInfoObj = JSON.parse(userInfoJSON);
+    const time = getTimeMinutes();
+    userInfoObj.length_of_visit = time;
+    return JSON.stringify(userInfoObj);
 }
 
 module.exports.app = app;
