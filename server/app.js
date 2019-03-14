@@ -1,6 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const cors = require('cors')
+
 
 const {promisify} = require('util');
 
@@ -11,6 +13,7 @@ const app = express();
 app.use(bodyParser.json()); //onödig??
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(cors());
 
 app.get('/', (req, res) => {
     res.send('hola me llamo reuben');
@@ -45,7 +48,6 @@ function storeUserdataToFile(userdata) {
 function getTimeMinutes() {
     const millisec = Date.now();
     const minutes = millisec / 6e4;
-    console.log(minutes);
     return Math.floor(minutes);
 }
 
@@ -61,7 +63,7 @@ app.get('/get_userdata', async (req, res) => {
         readfileProm(`./server/userdata/${fileName}.txt`, 'utf8')
         .then(userObj => addLengthOfVisit(userObj))
         .then(data => res.status(202).send(data))
-        .catch(err => res.status(500).send('Found file with access key but could not read it:'. err))
+        .catch(err => res.status(500).send('Found file with access key but could not read it:', err))
     } else {
         res.status(401).send('The access key did not match the server')
     }
