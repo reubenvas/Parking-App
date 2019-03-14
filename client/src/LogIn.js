@@ -1,4 +1,6 @@
 import React from 'react';
+import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies'
+
 import Button from 'react-bootstrap/Button';
 import InputRow from './InputRow';
 
@@ -12,7 +14,6 @@ class LogIn extends React.Component {
             car_number: '',
             car_model: ''
         }
-        // this.updateValue = this.updateValue.bind(this);
     } 
 
     
@@ -52,7 +53,7 @@ class LogIn extends React.Component {
                 body: msg
             }).then(res => res.text())
 
-            console.log(response);
+            bake_cookie('access_key', response);
         }
         
 
