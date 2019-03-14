@@ -1,0 +1,21 @@
+{
+  "name": "car_parking_app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "nodemon": "nodemon server/server.js"
+  },
+  "repository": "git@github.com:saltsthlm/salt-winter19-hackdayW09.git",
+  "author": "Reuben Vas <reuben.vas@appliedtechnology.se>",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cookie-parser": "^1.4.4",
+    "express": "^4.16.4",
+    "fs": "^0.0.1-security",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.10"
+  }
+}
