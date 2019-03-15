@@ -29,7 +29,7 @@ class App extends React.Component {
     })
   }
 
-  isAccessKey () {
+  isAccessKey() {
     return read_cookie('access_key').length === 36;
   }
 
@@ -39,13 +39,13 @@ class App extends React.Component {
       logout: false
     })
   }
-  
+
   displayContent = () => {
-    if (this.state.login) return <LogIn update={this.updateWholeState}/>;
-    if (this.state.logout) return <LogOut update={this.updateWholeState}/>;
-    return this.isAccessKey() 
-          ? <Button onClick={() => this.enterLogOutPage()}>Check Out</Button> 
-          : <Button onClick={() => this.enterLogInPage()}>Check In</Button>;
+    if (this.state.login) return <LogIn update={this.updateWholeState} />;
+    if (this.state.logout) return <LogOut update={this.updateWholeState} />;
+    return this.isAccessKey()
+      ? <Button onClick={() => this.enterLogOutPage()}>Check Out</Button>
+      : <Button onClick={() => this.enterLogInPage()}>Check In</Button>;
   }
 
   render() {
@@ -54,6 +54,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <header className="App-header">
+          <h1>salt parking</h1>
           {page}
         </header>
       </div>

@@ -23,6 +23,7 @@ class InputRow extends React.Component {
             <div>
                 <p className="label">{this.props.text}</p>
                 <input type="text" value={this.state.value} onChange={(event) => this.updateInput(event)}/>
+                <small>{this.props.errorText}</small>
             </div>
         );
     }
