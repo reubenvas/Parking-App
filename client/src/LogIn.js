@@ -24,21 +24,22 @@ class LogIn extends React.Component {
             this.setState({
                 name: event.target.value
             });
-            console.log('parent:',this.state.name);
         }
 
         const updateValueCarNumber = (event) => {
             this.setState({
                 car_number: event.target.value
             });
-            console.log('parent:',this.state.name);
         } 
         
         const updateValueCarModel = (event) => {
             this.setState({
                 car_model: event.target.value
             });
-            console.log('parent:',this.state.name);
+        }
+
+        const goBack = () => {
+            this.props.update();
         }
 
         const submitData = async () => {
@@ -52,8 +53,8 @@ class LogIn extends React.Component {
                 },
                 body: msg
             }).then(res => res.text())
-
             bake_cookie('access_key', response);
+            goBack();
         }
         
 
@@ -66,7 +67,9 @@ class LogIn extends React.Component {
                 <InputRow text={'car model'} initialValue={this.state.car_model} update={updateValueCarModel}/>
                 
                 <hr/>
-                <Button className="submit" onClick={submitData}>park</Button>
+                <Button onClick={submitData} variant="info" size="lg">park</Button>
+                <br/>
+                <Button  onClick={() => goBack()} variant="light" size="sm">cancel</Button>
             </div>
         );
     }

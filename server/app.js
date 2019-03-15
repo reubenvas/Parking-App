@@ -4,7 +4,7 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors')
 
 
-const {promisify} = require('util');
+const { promisify } = require('util');
 
 const fs = require('fs');
 
@@ -53,26 +53,26 @@ function getTimeMinutes() {
 
 app.get('/get_userdata', async (req, res) => {
     // use authorization
-    const userAccessKey = req.headers.authorization.split(' ')[1];
-    const userdataFiles = await getUserdataFiles();
-    const fileName = userdataFiles
-                        .map(fileName => fileName.split('.')[0])
-                        .find(accessKey => accessKey === userAccessKey);
-    if (fileName) {
-        const readfileProm = promisify(fs.readFile);
-        readfileProm(`./server/userdata/${fileName}.txt`, 'utf8')
-        .then(userObj => addLengthOfVisit(userObj))
-        .then(data => res.status(202).send(data))
-        .catch(err => res.status(500).send('Found file with access key but could not read it:', err))
-    } else {
+    let userAccessKey;
+    if (!req.headers.authorization) {
         res.status(401).send('The access key did not match the server')
     }
+    userAccessKey = req.headers.authorization.split(' ')[1];
+    const userdataFiles = await getUserdataFiles();
+    const fileName = userdataFiles
+        .map(fileName => fileName.split('.')[0])
+        .find(accessKey => accessKey === userAccessKey);
+    const readfileProm = promisify(fs.readFile);
+    readfileProm(`./server/userdata/${fileName}.txt`, 'utf8')
+        .then(userObj => addLengthOfVisit(userObj))
+        .then(data => res.status(202).send(data))
+        .catch(err => res.status(500).send('Found file with access key but could not read it:', err));
 })
 
 function getUserdataFiles() {
     const readdirProm = promisify(fs.readdir);
     return readdirProm('./server/userdata')
-            .catch(err => console.error(err));
+        .catch(err => console.error(err));
 }
 
 function addLengthOfVisit(userInfoJSON) {

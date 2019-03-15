@@ -13,7 +13,7 @@ class InputRow extends React.Component {
         this.setState({
             value: event.target.value
         });
-        this.props.update(event)
+        this.props.update(event);
         console.log('child:',event.target.value);
         // props.update(event);
     }

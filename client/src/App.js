@@ -23,25 +23,33 @@ class App extends React.Component {
     })
   }
 
-  enterLogOutPage() {
+  enterLogOutPage = () => {
     this.setState({
       logout: true
     })
   }
 
+  isAccessKey () {
+    return read_cookie('access_key').length === 36;
+  }
+
+  updateWholeState = () => {
+    this.setState({
+      login: false,
+      logout: false
+    })
+  }
+  
+  displayContent = () => {
+    if (this.state.login) return <LogIn update={this.updateWholeState}/>;
+    if (this.state.logout) return <LogOut update={this.updateWholeState}/>;
+    return this.isAccessKey() 
+          ? <Button onClick={() => this.enterLogOutPage()}>Check Out</Button> 
+          : <Button onClick={() => this.enterLogInPage()}>Check In</Button>;
+  }
+
   render() {
-    let page;
-    if (this.state.login) {
-      page = <LogIn />;
-    } else if (this.state.logout) {
-      page = <LogOut />;
-    } else {
-      page =
-        <div>
-          <Button onClick={() => this.enterLogInPage()}>Check In</Button>
-          <Button onClick={() => this.enterLogOutPage()}>Check Out</Button>
-        </div>
-    }
+    let page = this.displayContent();
 
     return (
       <div className="App">
