@@ -7,36 +7,54 @@ class LogOut extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            stayInMinutes: 0,
+            stayInSeconds: 0,
             hours: 0,
-            minutes: 0
+            minutes: 0,
+            seconds: 0,
+            prize: 0
         }
     }
+    
+    userAccessKey = read_cookie('access_key');
 
     getUserData = () => {
-        const userAccessKey = read_cookie('access_key');
-        if (userAccessKey.length !== 36) {
+        if (this.userAccessKey.length !== 36) {
             return;
         }
         fetch('http://localhost:5000/get_userdata', {
             headers: {
-                Authorization: `Bearer ${userAccessKey}`
+                Authorization: `Bearer ${this.userAccessKey}`
             }
         }).then(d => d.json()).then(data => {
-            const stayInMinutes = data.length_of_visit - data.time_of_arrival;
-            const hours = Math.floor(stayInMinutes/60);
-            const minutes = stayInMinutes - hours * 60;
+            const stayInSeconds = data.length_of_visit - data.time_of_arrival;
+            // console.log('sekunder:',stayInSeconds);
+            const hours = Math.floor(stayInSeconds / 3.6e3);
+            const minutes = Math.floor((stayInSeconds - hours * 3.6e3) / 60);
+            const seconds = stayInSeconds - hours * 3.6e3 - minutes * 60;
+            const prize = Math.round((stayInSeconds / 3.6e3) * this.prize);
             this.setState({
-                stayInMinutes: stayInMinutes,
+                stayInMinutes: stayInSeconds,
                 hours: hours,
-                minutes: minutes
+                minutes: minutes,
+                seconds: seconds,
+                prize: prize
             })
         })
     }
 
-    calculatePrize = () => {
-        return Math.round(this.state.stayInMinutes * 20 / 60);
+    deleteUserdata = () => {
+        if (this.userAccessKey.length !== 36) {
+            return;
+        }
+        fetch('http://localhost:5000/delete_userdata', {
+            method: 'DELETE',
+            headers: {
+                Authorization: `Bearer ${this.userAccessKey}`
+            }
+        })
     }
+
+    prize = 1200;
 
     goBack = () => {
         this.props.update();
@@ -44,19 +62,19 @@ class LogOut extends React.Component {
 
     pay = () => {
         delete_cookie('access_key');
+        this.deleteUserdata();
         this.goBack();
     }
 
     render() {
         this.getUserData();
-        const prize = this.calculatePrize();
         return (
             <div>
-                <p>You have been here for {this.state.hours} hours and {this.state.minutes} minutes</p>
-                <small>Price is 20 SEK/h</small>
+                <p>You have been here for {this.state.hours} hours, {this.state.minutes} minutes and {this.state.seconds} seconds.</p>
+                <small>Price is {this.prize} SEK/h</small>
                 <h2>Good Bye</h2>
                 <div>
-                    <Button onClick={() => {this.pay()}} variant="dark" size="lg">pay {prize} kr</Button>
+                    <Button onClick={() => {this.pay()}} variant="dark" size="lg">pay {this.state.prize} kr</Button>
                     <br />
                     <Button onClick={() => this.goBack()} variant="danger" size="sm">go back</Button>
                 </div>

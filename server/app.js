@@ -6,7 +6,7 @@ const cors = require('cors')
 
 const { promisify } = require('util');
 
-const fs = require('fs');
+const { writeFile, readFile, readdir, unlink } = require('fs');
 
 const app = express();
 
@@ -15,15 +15,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(cors());
 
-app.get('/', (req, res) => {
-    res.send('hola me llamo reuben');
-})
-
 app.post('/submit_userdata', (req, res) => {
-    // should be sent in x-www-form-urlencoded
-    // 'name=Reuben_Vas&car_number=ABC123&car_model=Volvo
-    // try w/o underscores
-
     const accessKey = storeUserdataToFile(req.body);
     res.status(202).send(accessKey);
 })
@@ -31,55 +23,86 @@ app.post('/submit_userdata', (req, res) => {
 function storeUserdataToFile(userdata) {
     const generateUuid = require('uuid/v1');
     const accessKey = generateUuid();
-    const time = getTimeMinutes();
+    const time = getTimeSeconds();
     const userInfo = {
         ...userdata,
         time_of_arrival: time,
         access_key: accessKey
     };
 
-    fs.writeFile(`./server/userdata/${accessKey}.txt`, JSON.stringify(userInfo), (err) => {
-        if (err) throw err;
-        console.log('The file has been saved!');
-    })
+    writeUserdataFile(accessKey, userInfo);
     return accessKey;
 }
 
-function getTimeMinutes() {
+function getTimeSeconds() {
     const millisec = Date.now();
-    const minutes = millisec / 6e4;
-    return Math.floor(minutes);
+    const seconds = millisec / 1e3;
+    return Math.floor(seconds);
 }
 
 app.get('/get_userdata', async (req, res) => {
-    // use authorization
-    let userAccessKey;
     if (!req.headers.authorization) {
-        res.status(401).send('The access key did not match the server')
+        res.status(401).send('The access key did not match the server');
+        return;
     }
-    userAccessKey = req.headers.authorization.split(' ')[1];
+    const fileName = req.headers.authorization.split(' ')[1] + '.txt';
     const userdataFiles = await getUserdataFiles();
-    const fileName = userdataFiles
-        .map(fileName => fileName.split('.')[0])
-        .find(accessKey => accessKey === userAccessKey);
-    const readfileProm = promisify(fs.readFile);
-    readfileProm(`./server/userdata/${fileName}.txt`, 'utf8')
-        .then(userObj => addLengthOfVisit(userObj))
+    if (!userdataFiles.includes(fileName)) {
+        res.status(404).send('filename does not match with any in server');
+        return;
+    }
+    getUserdataInfo(fileName)
         .then(data => res.status(202).send(data))
         .catch(err => res.status(500).send('Found file with access key but could not read it:', err));
 })
 
+function writeUserdataFile(accessKey, userInfo) {
+    writeFile(`./server/userdata/${accessKey}.txt`, JSON.stringify(userInfo), (err) => {
+        if (err) throw err;
+        console.log('The file has been saved!');
+    })
+}
+
 function getUserdataFiles() {
-    const readdirProm = promisify(fs.readdir);
+    const readdirProm = promisify(readdir);
     return readdirProm('./server/userdata')
         .catch(err => console.error(err));
 }
 
+function getUserdataInfo(fileName) {
+    const readfileProm = promisify(readFile);
+    return readfileProm(`./server/userdata/${fileName}`, 'utf8')
+        .then(userObj => addLengthOfVisit(userObj))
+}
+
+function deleteUserdataFile(fileName) {
+    unlink(`./server/userdata/${fileName}`, err => {
+        if (err) throw err;
+        console.log(`./server/userdata/${fileName} was deleted`);
+    });
+}
+
 function addLengthOfVisit(userInfoJSON) {
     const userInfoObj = JSON.parse(userInfoJSON);
-    const time = getTimeMinutes();
+    const time = getTimeSeconds();
     userInfoObj.length_of_visit = time;
     return JSON.stringify(userInfoObj);
 }
+
+app.delete('/delete_userdata', async (req, res) => {
+    const userdataFiles = await getUserdataFiles();
+    const accessKey = req.headers.authorization;
+    if (!accessKey) {
+        res.status(400).send('Missing access key');
+        return;
+    }
+    const fileName = accessKey.split(' ')[1] + '.txt';
+    if (!userdataFiles.includes(fileName)) {
+        res.status(401).send('Cannot find file on server');
+        return;
+    }
+    deleteUserdataFile(fileName);
+    res.status(202).send('file deleted');
+}) //delete file thats sent in body
 
 module.exports.app = app;
