@@ -9,9 +9,9 @@ Run:
 ```
 npm install
 
-cd server && npm install
+npm install --prefix server
 
-cd client && npm install
+npm install --prefix client
 ```
 * Then start the app, like so:
 ```
