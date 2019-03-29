@@ -1,11 +1,10 @@
 # Test Park App
-<<<<<<< HEAD
 
 This is an app which manages basic functionalities of a car parking app. With it the user can basically "Check in" and "Check out" from a parking lot. It also calculates the total prize of the visit by multiplying the time of the visit with the price per hour.
 
 ## How to Run
-* First install dependencies: `npm install`
-* Then start the app, like so: `npm start`
+* First install dependencies: ```npm install```
+* Then start the app, like so: ```npm start```
 
 
 ### Prize Calculation
