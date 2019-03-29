@@ -10,7 +10,11 @@ const { writeFile, readFile, readdir, unlink } = require('fs');
 
 const app = express();
 
+<<<<<<< HEAD
 app.use(bodyParser.json()); 
+=======
+app.use(bodyParser.json()); //onödig??
+>>>>>>> cebdf9d7dc870489e7c895ef5d5af00389de066a
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(cors());
