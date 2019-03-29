@@ -5,21 +5,26 @@
   "main": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+
+    "install-server": "npm install --prefix server",
+    "install-client": "npm install --prefix client",
+    "install": "npm run install-server && npm run install-client",
+
     "client": "npm start --prefix client",
     "server": "npm start --prefix server",
     "start": "concurrently \"npm run client\" \"npm run server\" "
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/saltsthlm/salt-winter19-hackdayW09.git"
+    "url": "git+https://github.com/reubenvassalt/Parking-App.git"
   },
   "author": "Reuben Vas",
   "keywords": [],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/saltsthlm/salt-winter19-hackdayW09/issues"
+    "url": "https://github.com/reubenvassalt/Parking-App/issues"
   },
-  "homepage": "https://github.com/saltsthlm/salt-winter19-hackdayW09#readme",
+  "homepage": "https://github.com/reubenvassalt/Parking-App#readme",
   "dependencies": {
     "concurrently": "^4.1.0"
   }

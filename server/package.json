@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "nodemon": "nodemon server/server.js",
+    "nodemon": "nodemon server.js",
     "start": "node server.js"
   },
   "dependencies": {
