@@ -5,14 +5,6 @@
   "main": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-<<<<<<< HEAD
-=======
-
-    "install-server": "npm install --prefix server",
-    "install-client": "npm install --prefix client",
-    "install": " npm run install-server && npm run install-client",
-    
->>>>>>> cebdf9d7dc870489e7c895ef5d5af00389de066a
     "client": "npm start --prefix client",
     "server": "npm start --prefix server",
     "start": "concurrently \"npm run client\" \"npm run server\" "
@@ -31,8 +23,4 @@
   "dependencies": {
     "concurrently": "^4.1.0"
   }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> cebdf9d7dc870489e7c895ef5d5af00389de066a
