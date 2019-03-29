@@ -113,11 +113,13 @@ class LogIn extends React.Component {
                     popover={'Volvo'}
                 />
 				<Button 
-				onClick={submitData} 
-				raised>
+                onClick={submitData} 
+                color="primary"
+                variant="contained"
+                >
 				park
 				</Button>
-                <Button onClick={() => goBack()} variant="light" size="sm">cancel</Button>
+                <Button onClick={() => goBack()}  raisedprimary="false" size="small">cancel</Button>
             </div>
         );
     }

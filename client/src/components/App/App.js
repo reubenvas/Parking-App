@@ -1,11 +1,9 @@
 import React from 'react';
 import './App.css';
 import { read_cookie } from 'sfcookies'
-import LogIn from './LogIn';
-import LogOut from './LogOut';
-
-
-import Button from 'react-bootstrap/Button';
+import LogIn from '../LogIn';
+import LogOut from '../LogOut';
+import Button from '@material-ui/core/Button';
 
 
 class App extends React.Component {
@@ -42,7 +40,7 @@ class App extends React.Component {
     if (read_cookie('access_key').length === 36) {
       return (
         <div>
-          <h1>salt parking</h1>
+          <h1>Park Easy</h1>
           <Button onClick={() => this.enterLogOutPage()}>Check Out</Button>
         </div>
       )
@@ -50,7 +48,13 @@ class App extends React.Component {
       return (
         <div>
           <h1>salt parking</h1>
-          <Button onClick={() => this.enterLogInPage()}>Check In</Button>
+          <Button
+          onClick={() => this.enterLogInPage()}
+          variant="outlined"
+          color="primary"
+          >
+          Check In
+          </Button>
         </div>
       )
     }

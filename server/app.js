@@ -42,13 +42,13 @@ function getTimeSeconds() {
 
 app.get('/get_userdata', async (req, res) => {
     if (!req.headers.authorization) {
-        res.status(401).send('The access key did not match the server');
+        res.status(401).send('The access key did not match the');
         return;
     }
     const fileName = req.headers.authorization.split(' ')[1] + '.txt';
     const userdataFiles = await getUserdataFiles();
     if (!userdataFiles.includes(fileName)) {
-        res.status(404).send('filename does not match with any in server');
+        res.status(404).send('filename does not match with any in');
         return;
     }
     getUserdataInfo(fileName)
@@ -57,7 +57,7 @@ app.get('/get_userdata', async (req, res) => {
 })
 
 function writeUserdataFile(accessKey, userInfo) {
-    writeFile(`./server/userdata/${accessKey}.txt`, JSON.stringify(userInfo), (err) => {
+    writeFile(`./userdata/${accessKey}.txt`, JSON.stringify(userInfo), (err) => {
         if (err) throw err;
         console.log('The file has been saved!');
     })
@@ -65,20 +65,20 @@ function writeUserdataFile(accessKey, userInfo) {
 
 function getUserdataFiles() {
     const readdirProm = promisify(readdir);
-    return readdirProm('./server/userdata')
+    return readdirProm('./userdata')
         .catch(err => console.error(err));
 }
 
 function getUserdataInfo(fileName) {
     const readfileProm = promisify(readFile);
-    return readfileProm(`./server/userdata/${fileName}`, 'utf8')
+    return readfileProm(`./userdata/${fileName}`, 'utf8')
         .then(userObj => addLengthOfVisit(userObj))
 }
 
 function deleteUserdataFile(fileName) {
-    unlink(`./server/userdata/${fileName}`, err => {
+    unlink(`./userdata/${fileName}`, err => {
         if (err) throw err;
-        console.log(`./server/userdata/${fileName} was deleted`);
+        console.log(`./userdata/${fileName} was deleted`);
     });
 }
 
@@ -98,7 +98,7 @@ app.delete('/delete_userdata', async (req, res) => {
     }
     const fileName = accessKey.split(' ')[1] + '.txt';
     if (!userdataFiles.includes(fileName)) {
-        res.status(401).send('Cannot find file on server');
+        res.status(401).send('Cannot find file on');
         return;
     }
     deleteUserdataFile(fileName);
