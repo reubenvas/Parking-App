@@ -1,25 +1,28 @@
-# &lt;/salt&gt;
+# Test Park App
 
-## Individual hack day!
+This is an app which manages basic functionalities of a car parking app. With it the user can basically "Check in" and "Check out" from a parking lot. It also calculates the total prize of the visit by multiplying the time of the visit with the price per hour.
 
-Today you will spend the entire day individually to scope, create and finish a small project.
+## How to Run
+* First install dependencies:
 
-It is important that you stay on Epicenter when doing your projects. If you're not at the office, slack us your location so that we can pay you a visit!
+Run:
+```
+npm install
 
-### Instructions:
+npm install --prefix server
 
-You are supposed to code something on your own. It is OK to find inspiration from sources online as long as the end result is something unique. Making a carbon copy (or a copy with minimal changes) is __not__ OK.
+npm install --prefix client
+```
+* Then start the app, like so:
+```
+npm start
+```
 
-Remember that you should scope it in a way that you think you can complete this in one day.
+### Prize Calculation
+When the user checks in, the app documents the time of arrival. In the same way, when the user checks out, the time of that moment is used to calculate the total time of the visit. As the check out is initialized, the app uses the time of the checkout and checkin to calculate the total time of the stay.
 
-You are allowed to use any techniques that we have used so far in this course. If you want to explore something new, talk to us first.
-
-If you want to co-operate in pairs and build one part each of a larger application, come talk to us first. Pair programming is not allowed in this exercise, but we might be able to find a solution if you have a really good idea that can be clearly separated into two parts.
-
-Create a new branch named after yourself and work in this.
-
-__VERY important__: Push your solutions to GitHub on a regular basis. As soon as something works - commit with a descriptive comment and push! Before you go home for the day, push everything you got.
-
-
-### Presentation
-Everyone will get to present their work in front of part of the class. This will take place at 13:00 on Friday.
+### This app uses javascript technologies such as:
+- React
+- Express
+- FS
+- API
