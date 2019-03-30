@@ -2,6 +2,7 @@ import React from 'react';
 import { bake_cookie } from 'sfcookies'
 
 import Button from '@material-ui/core/Button';
+import Input from '@material-ui/core/Input';
 // import Button from 'react-bootstrap/Button';
 import InputRow from './InputRow';
 
@@ -69,7 +70,8 @@ class LogIn extends React.Component {
             return isError;
         }
 
-        const submitData = async () => {
+        const submitData = async (e) => {
+            e.preventDefault();
             console.log(this.state.name);
             const err = validate();
             if (!err) {
@@ -91,35 +93,38 @@ class LogIn extends React.Component {
         return (
             <div>
                 <h2>Register your Car information</h2>
-                <InputRow
-                    text={'Name'}
-                    initialValue={this.state.name}
-                    errorText={this.state.nameError}
-                    update={updateValue('name')}
-                    popover={'Reuben Reubensson'}
-                />
-                <InputRow
-                    text={'Registration Number'}
-                    initialValue={this.state.registration_number}
-                    errorText={this.state.registration_numberError}
-                    update={updateValue('registration_number')}
-                    popover={'REU831'}
-                />
-                <InputRow
-                    text={'Car Model'}
-                    initialValue={this.state.car_model}
-                    errorText={this.state.car_modelError}
-                    update={updateValue('car_model')}
-                    popover={'Volvo'}
-                />
-				<Button 
-                onClick={submitData} 
-                color="primary"
-                variant="contained"
-                >
-				park
+                <form onSubmit={(e) => submitData(e)}>
+                    <InputRow
+                        text={'Name'}
+                        initialValue={this.state.name}
+                        errorText={this.state.nameError}
+                        update={updateValue('name')}
+                        popover={'Reuben Reubensson'}
+                    />
+                    <InputRow
+                        text={'Registration Number'}
+                        initialValue={this.state.registration_number}
+                        errorText={this.state.registration_numberError}
+                        update={updateValue('registration_number')}
+                        popover={'REU831'}
+                    />
+                    <InputRow
+                        text={'Car Model'}
+                        initialValue={this.state.car_model}
+                        errorText={this.state.car_modelError}
+                        update={updateValue('car_model')}
+                        popover={'Volvo'}
+                    />
+                    <Button
+                        type='submit'
+                        onClick={submitData}
+                        color="primary"
+                        variant="contained"
+                    >
+                        park
 				</Button>
-                <Button onClick={() => goBack()}  raisedprimary="false" size="small">cancel</Button>
+                </form>
+                <Button onClick={() => goBack()} raisedprimary="false" size="small">cancel</Button>
             </div>
         );
     }
