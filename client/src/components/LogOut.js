@@ -14,14 +14,14 @@ class LogOut extends React.Component {
             prize: 0
         }
     }
-    
+
     userAccessKey = read_cookie('access_key');
 
     getUserData = () => {
         if (this.userAccessKey.length !== 36) {
             return;
         }
-        fetch('http://localhost:5000/get_userdata', {
+        fetch('/get_userdata', {
             headers: {
                 Authorization: `Bearer ${this.userAccessKey}`
             }
@@ -46,7 +46,7 @@ class LogOut extends React.Component {
         if (this.userAccessKey.length !== 36) {
             return;
         }
-        fetch('http://localhost:5000/delete_userdata', {
+        fetch('/delete_userdata', {
             method: 'DELETE',
             headers: {
                 Authorization: `Bearer ${this.userAccessKey}`

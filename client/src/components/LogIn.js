@@ -2,8 +2,6 @@ import React from 'react';
 import { bake_cookie } from 'sfcookies'
 
 import Button from '@material-ui/core/Button';
-import Input from '@material-ui/core/Input';
-// import Button from 'react-bootstrap/Button';
 import InputRow from './InputRow';
 
 
@@ -77,7 +75,7 @@ class LogIn extends React.Component {
             if (!err) {
                 // 'name=Reuben_Vas&registration_number=ABC123&car_model=Volvo'
                 const msg = `name=${this.state.name}&registration_number=${this.state.registration_number}&car_model=${this.state.car_model}`
-                const response = await fetch('http://localhost:5000/submit_userdata', {
+                const response = await fetch('/submit_userdata', {
                     method: 'POST',
                     headers: {
                         "Content-Type": "application/x-www-form-urlencoded"

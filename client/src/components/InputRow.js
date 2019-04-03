@@ -41,6 +41,8 @@ class InputRow extends React.Component {
         </Popover>
     );
 
+    
+
     render() {
         console.log('error:', this.props.errorText)
 
@@ -49,6 +51,7 @@ class InputRow extends React.Component {
                 <OverlayTrigger trigger="hover" placement="right" overlay={this.popover}>
                     <TextField
                         // does not look good
+
                         label={this.props.text}
 
                         value={this.state.value}

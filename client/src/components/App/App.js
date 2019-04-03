@@ -37,31 +37,19 @@ class App extends React.Component {
   displayContent = () => {
     if (this.state.login) return <LogIn update={this.updateWholeState} />;
     if (this.state.logout) return <LogOut update={this.updateWholeState} />;
-    if (read_cookie('access_key').length === 36) {
-      return (
-        <div>
-          <h1>Park Easy</h1>
-          <Button onClick={() => this.enterLogOutPage()}>Check Out</Button>
-        </div>
-      )
-    } else {
-      return (
-        <div>
-          <h1>salt parking</h1>
-          <Button
-          onClick={() => this.enterLogInPage()}
-          variant="outlined"
-          color="primary"
-          >
-          Check In
-          </Button>
-        </div>
-      )
-    }
+    const button = (read_cookie('access_key').length === 36) ?
+      <Button onClick={() => this.enterLogOutPage()}>Check Out</Button> :
+      <Button onClick={() => this.enterLogInPage()} variant="outlined" color="primary">Check In</Button>;
+    return (
+      <div>
+        <h1>Park Easy</h1>
+        {button}
+      </div>
+    )
   }
 
   render() {
-    let page = this.displayContent();
+    const page = this.displayContent();
 
     return (
       <div className="App">
