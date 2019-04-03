@@ -7,13 +7,10 @@ import Button from '@material-ui/core/Button';
 
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
+    state = {
       login: false,
       logout: false
     }
-  }
 
   enterLogInPage() {
     this.setState({
