@@ -11,7 +11,9 @@
     "cookie-parser": "^1.4.4",
     "cors": "^2.8.5",
     "express": "^4.16.4",
+    "express-favicon": "^2.0.1",
     "fs": "^0.0.1-security",
+    "path": "^0.12.7",
     "util": "^0.11.1",
     "uuid": "^3.3.2"
   },

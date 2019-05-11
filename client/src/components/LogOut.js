@@ -21,7 +21,7 @@ class LogOut extends React.Component {
         if (this.userAccessKey.length !== 36) {
             return;
         }
-        fetch('/get_userdata', {
+        fetch('/userdata', {
             headers: {
                 Authorization: `Bearer ${this.userAccessKey}`
             }
@@ -46,7 +46,7 @@ class LogOut extends React.Component {
         if (this.userAccessKey.length !== 36) {
             return;
         }
-        fetch('/delete_userdata', {
+        fetch('/userdata', {
             method: 'DELETE',
             headers: {
                 Authorization: `Bearer ${this.userAccessKey}`

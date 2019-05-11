@@ -1,22 +1,34 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const cors = require('cors')
+const cors = require('cors');
 
+const favicon = require('express-favicon');
+const path = require('path');
 
 const { promisify } = require('util');
-
 const { writeFile, readFile, readdir, unlink } = require('fs');
 
 const app = express();
-
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(cors());
 
-app.post('/submit_userdata', (req, res) => {
+// the __dirname is the current directory
+// from where the script is running
+app.use(favicon(path.join( __dirname, '/../client/build/favicon.ico')));
+// app.use(express.static(__dirname));
+// app.use(express.static(path.join(__dirname, '/../client')));
+console.log(path.join(__dirname, '/../client', 'build'));
+app.use(express.static(path.join(__dirname, '/../client', 'build')));
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join( __dirname, '/../client', 'build', 'index.html'));
+  });
+
+app.post('/userdata', (req, res) => {
     const accessKey = storeUserdataToFile(req.body);
     res.status(202).send(accessKey);
 })
@@ -41,7 +53,7 @@ function getTimeSeconds() {
     return Math.floor(seconds);
 }
 
-app.get('/get_userdata', async (req, res) => {
+app.get('/userdata', async (req, res) => {
     if (!req.headers.authorization) {
         res.status(401).send('The access key did not match the');
         return;
@@ -90,7 +102,7 @@ function addLengthOfVisit(userInfoJSON) {
     return JSON.stringify(userInfoObj);
 }
 
-app.delete('/delete_userdata', async (req, res) => {
+app.delete('/userdata', async (req, res) => {
     const userdataFiles = await getUserdataFiles();
     const accessKey = req.headers.authorization;
     if (!accessKey) {
