@@ -12,7 +12,10 @@
 
     "client": "npm start --prefix client",
     "server": "npm start --prefix server",
-    "start": "npm run server"
+    "server-dev": "npm run nodemon --prefix server",
+    "start": "npm run server",
+
+    "dev": "concurrently \" npm run client \" \" npm run server-dev\" "
   },
   "repository": {
     "type": "git",

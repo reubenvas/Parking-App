@@ -25,7 +25,7 @@ class LogOut extends React.Component {
             headers: {
                 Authorization: `Bearer ${this.userAccessKey}`
             }
-        }).then(d => d.json()).then(data => {
+        }).then(r => r.json()).then(data => {
             const stayInSeconds = data.length_of_visit - data.time_of_arrival;
             // console.log('sekunder:',stayInSeconds);
             const hours = Math.floor(stayInSeconds / 3.6e3);
@@ -39,7 +39,8 @@ class LogOut extends React.Component {
                 seconds: seconds,
                 prize: prize
             })
-        })
+        }).catch(err => console.error(err));
+        console.log('sending get request for data');
     }
 
     deleteUserdata = () => {
@@ -66,8 +67,12 @@ class LogOut extends React.Component {
         this.goBack();
     }
 
-    render() {
+    componentWillMount = () => {
+        setInterval(this.getUserData, 1000)
         this.getUserData();
+    }
+
+    render() {
         return (
             <div>
                 <p>You have been here for {this.state.hours} hours, {this.state.minutes} minutes and {this.state.seconds} seconds.</p>
