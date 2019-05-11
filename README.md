@@ -14,4 +14,4 @@ When the user checks in, the app documents the time of arrival. In the same way,
 - React
 - Express
 - FS
-- API
+- REST
