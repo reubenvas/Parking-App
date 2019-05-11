@@ -12,7 +12,7 @@
 
     "client": "npm start --prefix client",
     "server": "npm start --prefix server",
-    "start": "concurrently \"npm run client\" \"npm run server\" "
+    "start": "npm run server"
   },
   "repository": {
     "type": "git",
